@@ -17,11 +17,16 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         //카드 배열을 생성
-
+        CreateArray();
         //카드를 초기화
-
+        InitailizeCard();
         //오디오 소스를 할당
+        audioSource = GetComponent<AudioSource>();
+    }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R)) InitailizeCard();
     }
 
     //카드 배치 배열을 생성하는 함수
@@ -51,35 +56,37 @@ public class GameManager : MonoBehaviour
     private void InitailizeCard()
     {
         //모든 카드를 초기화 상태로
-
+        for (int i = 0; i < 8; i++) cardObject[i].GetComponent<Image>().sprite = cardSprite[0];
     }
 
     public void ShowWhoAmI(int myPos)
     {
         //세팅 중이면 조작 불가
         if (isSetting == true) return;
-
+         
         //누른 카드는 자신의 카드를 보여주고 버튼을 비활성화
         int myNumber = numberArray[myPos];
+        cardObject[myPos].GetComponent<Image>().sprite = cardSprite[myNumber];
+        cardObject[myPos].GetComponent<Button>().interactable = false;
 
         //클릭에 대한 판정
         if (firstCardPos == -1)
         {
             //첫번째 카드를 집는 경우
             //내가 집은 첫번째 카드의 위치를 저장해둔다.
-
+            firstCardPos = myPos;
         }
         else if (numberArray[firstCardPos] == myNumber)
         {
             //두번째 카드를 열고 그 카드가 동일할 경우
             //정답 반응
-
+            SameReaction(myPos);
         }
         else
         {
             //두번째 카드를 열었지만 다를 경우
             //실패 반응
-
+            StartCoroutine(DiffReaction(myPos));
         }
     }
 
