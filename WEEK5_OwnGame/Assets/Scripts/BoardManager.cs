@@ -93,7 +93,7 @@ public class BoardManager : MonoBehaviour
             if (!(targetX >= 0 && targetX < boardSize && targetY >= 0 && targetY < boardSize)) return false;
 
             //이미 블럭이 존재할 경우 false 반환
-            if (tilesState[targetX, targetY] == 1) return false;
+            //if (tilesState[targetX, targetY] == 1) return false;
         }
 
         return true;
