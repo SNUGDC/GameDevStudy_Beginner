@@ -115,10 +115,17 @@ public class BoardManager : MonoBehaviour
             int targetY = (int)mousePosInt().y + (int)tr.localPosition.y;
             
             tilesObject[targetX, targetY].GetComponent<SpriteRenderer>().sprite = holdingBlock.GetComponentInChildren<SpriteRenderer>().sprite;
+            tilesObject[targetX, targetY].GetComponent<BoxCollider2D>().isTrigger = false;
             tilesState[targetX, targetY] = 1;
         }
 
         Destroy(holdingBlock);
         holdingBlock = null;
+    }
+
+    public void DestroyBlock(int x, int y)
+    {
+        Destroy(tilesObject[x, y]);
+        tilesObject[x, y] = Instantiate(tilePrefab, new Vector2(x, y), Quaternion.identity, transform);
     }
 }

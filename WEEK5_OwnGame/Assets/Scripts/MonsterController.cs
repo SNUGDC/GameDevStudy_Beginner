@@ -28,6 +28,10 @@ public class MonsterController : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D coll)
     {
-        Debug.Log(coll.transform.localPosition);
+        int posX = (int)coll.gameObject.transform.localPosition.x;
+        int posY = (int)coll.gameObject.transform.localPosition.y;
+
+        BoardManager.instance.DestroyBlock(posX, posY);
+        Destroy(gameObject);
     }
 }
