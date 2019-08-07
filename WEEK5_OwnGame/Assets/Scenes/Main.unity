@@ -225,22 +225,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardSize: 5
   blockType:
-  - {fileID: 5703036928065181653, guid: 8722240d2d89ffb44b21a89aaa28c1df, type: 3}
-  - {fileID: 5703036928065181653, guid: f4b230fd3668c774da1a629c300adae5, type: 3}
-  - {fileID: 3897464459691594055, guid: 7d8a598966f10a44ca20f3732c6269ee, type: 3}
-  - {fileID: 2559870053809426790, guid: 69c6d72a8f0733c4699a90f4fe578b1f, type: 3}
   - {fileID: 2559870053809426790, guid: 964583806a44eb642ade074356b6421d, type: 3}
+  - {fileID: 2559870053809426790, guid: 53696fa74bdc2524fa2b09d4a1c666e0, type: 3}
+  - {fileID: 2559870053809426790, guid: ae204fea37ea0ed4f8d8098a6e92b789, type: 3}
+  - {fileID: 2559870053809426790, guid: 2b21bc4d423ba0248a0b041a1c7410cd, type: 3}
+  - {fileID: 2559870053809426790, guid: b17b927498167d441b956303eabccc03, type: 3}
+  - {fileID: 2559870053809426790, guid: abfb3f9fc184358478acc0c3fce38018, type: 3}
+  - {fileID: 2559870053809426790, guid: d631add26f0149c48b39afe65b692b48, type: 3}
   tilePrefab: {fileID: 8321891050717883160, guid: dbeeb0e87a8d60247bc39d32ede1453a,
     type: 3}
   blockSprite:
+  - {fileID: 21300000, guid: 7159eff9b698002459fbcca693c729f2, type: 3}
   - {fileID: 21300000, guid: 5a80d8287137d8145b10143519e25d09, type: 3}
-  - {fileID: 21300002, guid: 5a80d8287137d8145b10143519e25d09, type: 3}
-  - {fileID: 21300004, guid: 5a80d8287137d8145b10143519e25d09, type: 3}
   - {fileID: 21300006, guid: 5a80d8287137d8145b10143519e25d09, type: 3}
-  - {fileID: 21300008, guid: 5a80d8287137d8145b10143519e25d09, type: 3}
-  - {fileID: 21300010, guid: 5a80d8287137d8145b10143519e25d09, type: 3}
-  - {fileID: 21300012, guid: 5a80d8287137d8145b10143519e25d09, type: 3}
-  - {fileID: 21300014, guid: 5a80d8287137d8145b10143519e25d09, type: 3}
+  - {fileID: 21300004, guid: 5a80d8287137d8145b10143519e25d09, type: 3}
   holdingBlock: {fileID: 0}
 --- !u!4 &877600572
 Transform:

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BlockController : MonoBehaviour
 {
-    public int myType;
+    public int myColor;
     private GameObject blocks;
     private Vector2 originPos;
 

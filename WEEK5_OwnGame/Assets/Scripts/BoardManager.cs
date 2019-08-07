@@ -18,7 +18,7 @@ public class BoardManager : MonoBehaviour
 
     [HideInInspector] public GameObject holdingBlock;
     private GameObject[,] tilesObject;
-    private int[,] tilesState; //0이면 아무것도 없는 상태, 1이면 뭔가 있는 상태
+    private int[,] tilesState; //0이면 아무것도 없는 상태, 1이면 가위, 2면 바위, 3이면 보
 
     private void Awake()
     {
@@ -38,11 +38,17 @@ public class BoardManager : MonoBehaviour
             for (int i = 0; i < 3; i++)
             {
                 int randomType = Random.Range(0, blockType.Count);
-                int randomColor = Random.Range(0, blockSprite.Count);
+                int randomColor = Random.Range(1, 4);
 
                 GameObject blocks = CreateBlock(randomType, randomColor);
                 blocks.transform.position = new Vector2(-5 + i * 5, -2);
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            //D를 눌렀을 때 어떤 숫자가 제일 많은지 로그로 띄우기
+            Debug.Log("D가 눌림.");
         }
     }
 
@@ -73,6 +79,7 @@ public class BoardManager : MonoBehaviour
         {
             GameObject singleBlock = block.transform.GetChild(i).gameObject;
             singleBlock.GetComponent<SpriteRenderer>().sprite = blockSprite[color];
+            singleBlock.GetComponent<BlockController>().myColor = color;
         }
 
         return block;
@@ -93,7 +100,7 @@ public class BoardManager : MonoBehaviour
             if (!(targetX >= 0 && targetX < boardSize && targetY >= 0 && targetY < boardSize)) return false;
 
             //이미 블럭이 존재할 경우 false 반환
-            if (tilesState[targetX, targetY] == 1) return false;
+            if (tilesState[targetX, targetY] != 0) return false;
         }
 
         return true;
@@ -115,10 +122,35 @@ public class BoardManager : MonoBehaviour
             int targetY = (int)mousePosInt().y + (int)tr.localPosition.y;
             
             tilesObject[targetX, targetY].GetComponent<SpriteRenderer>().sprite = holdingBlock.GetComponentInChildren<SpriteRenderer>().sprite;
-            tilesState[targetX, targetY] = 1;
+            tilesState[targetX, targetY] = holdingBlock.GetComponentInChildren<BlockController>().myColor;
         }
 
         Destroy(holdingBlock);
         holdingBlock = null;
+    }
+
+    private int Judgment()
+    {
+        //tileState
+        int redCount = 0;
+        int greenCount = 0;
+        int yellowCount = 0;
+
+        for (int i = 0; i < 6; i++)
+        {
+            if (tilesState[0, i] == 1)
+            {
+                redCount = redCount + 1;
+            }
+            if (tilesState[0, i] == 2)
+            {
+                greenCount = greenCount + 1;
+            }
+            if (tilesState[0, i] == 3)
+            {
+               yellowCount = yellowCount + 1;
+            }
+
+        }
     }
 }
