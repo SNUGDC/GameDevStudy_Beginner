@@ -18,7 +18,9 @@ public class BoardManager : MonoBehaviour
 
     [HideInInspector] public GameObject holdingBlock;
     private GameObject[,] tilesObject;
-    private int[,] tilesState; //0이면 아무것도 없는 상태, 1이면 뭔가 있는 상태
+    private int[,] tilesState; //0 흰색 1 검은색
+
+    private List<GameObject> BlockinBoard;
 
     private void Awake()
     {
@@ -29,12 +31,20 @@ public class BoardManager : MonoBehaviour
     private void Start()
     {
         CreateBoard();
+        BlockinBoard = new List<GameObject>();
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
+                for (int i = 0; i < BlockinBoard.Count; i++)
+                {
+                    Destroy(BlockinBoard[i]);
+                }
+
+                BlockinBoard.Clear();
+
             for (int i = 0; i < 3; i++)
             {
                 int randomType = Random.Range(0, blockType.Count);
@@ -43,6 +53,24 @@ public class BoardManager : MonoBehaviour
                 GameObject blocks = CreateBlock(randomType, randomColor);
                 blocks.transform.position = new Vector2(-5 + i * 5, -2);
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q) && holdingBlock != null)
+        {
+            RotateBlock();
+        }
+    }
+
+    private void RotateBlock()
+    {
+        for (int i = 0; i < holdingBlock.transform.childCount; i++)
+        {
+            Transform tr = holdingBlock.transform.GetChild(i).gameObject.transform;
+
+            float x = tr.localPosition.x;
+            float y = tr.localPosition.y;
+
+            tr.localPosition = new Vector2(y, -x);
         }
     }
 
@@ -75,6 +103,8 @@ public class BoardManager : MonoBehaviour
             singleBlock.GetComponent<SpriteRenderer>().sprite = blockSprite[color];
         }
 
+        BlockinBoard.Add(block);
+
         return block;
     }
 
@@ -93,7 +123,7 @@ public class BoardManager : MonoBehaviour
             if (!(targetX >= 0 && targetX < boardSize && targetY >= 0 && targetY < boardSize)) return false;
 
             //이미 블럭이 존재할 경우 false 반환
-            if (tilesState[targetX, targetY] == 1) return false;
+            //if (tilesState[targetX, targetY] == 1) return false;
         }
 
         return true;
@@ -113,9 +143,19 @@ public class BoardManager : MonoBehaviour
 
             int targetX = (int)mousePosInt().x + (int)tr.localPosition.x;
             int targetY = (int)mousePosInt().y + (int)tr.localPosition.y;
-            
-            tilesObject[targetX, targetY].GetComponent<SpriteRenderer>().sprite = holdingBlock.GetComponentInChildren<SpriteRenderer>().sprite;
-            tilesState[targetX, targetY] = 1;
+
+            //tilesObject[targetX, targetY].GetComponent<SpriteRenderer>().sprite = holdingBlock.GetComponentInChildren<SpriteRenderer>().sprite;
+
+            tilesState[targetX, targetY] = (tilesState[targetX, targetY] + 1) % 2;
+
+            if(tilesState[targetX, targetY] == 1)
+            {
+                tilesObject[targetX, targetY].GetComponent<SpriteRenderer>().sprite = blockSprite[1];
+            }
+            else
+            {
+                tilesObject[targetX, targetY].GetComponent<SpriteRenderer>().sprite = blockSprite[0];
+            }
         }
 
         Destroy(holdingBlock);

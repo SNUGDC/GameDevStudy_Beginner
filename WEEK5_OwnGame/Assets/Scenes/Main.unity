@@ -223,7 +223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1da0b6caadaf1d4298638a2d1e1bed0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardSize: 5
+  boardSize: 6
   blockType:
   - {fileID: 5703036928065181653, guid: 8722240d2d89ffb44b21a89aaa28c1df, type: 3}
   - {fileID: 5703036928065181653, guid: f4b230fd3668c774da1a629c300adae5, type: 3}
@@ -233,14 +233,8 @@ MonoBehaviour:
   tilePrefab: {fileID: 8321891050717883160, guid: dbeeb0e87a8d60247bc39d32ede1453a,
     type: 3}
   blockSprite:
-  - {fileID: 21300000, guid: 5a80d8287137d8145b10143519e25d09, type: 3}
-  - {fileID: 21300002, guid: 5a80d8287137d8145b10143519e25d09, type: 3}
-  - {fileID: 21300004, guid: 5a80d8287137d8145b10143519e25d09, type: 3}
-  - {fileID: 21300006, guid: 5a80d8287137d8145b10143519e25d09, type: 3}
-  - {fileID: 21300008, guid: 5a80d8287137d8145b10143519e25d09, type: 3}
+  - {fileID: 21300000, guid: 7159eff9b698002459fbcca693c729f2, type: 3}
   - {fileID: 21300010, guid: 5a80d8287137d8145b10143519e25d09, type: 3}
-  - {fileID: 21300012, guid: 5a80d8287137d8145b10143519e25d09, type: 3}
-  - {fileID: 21300014, guid: 5a80d8287137d8145b10143519e25d09, type: 3}
   holdingBlock: {fileID: 0}
 --- !u!4 &877600572
 Transform:
