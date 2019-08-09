@@ -8,6 +8,7 @@ public class BlockController : MonoBehaviour
     private GameObject blocks;
     private Vector2 originPos;
 
+
     private void Start()
     {
         blocks = transform.parent.gameObject;
@@ -16,30 +17,34 @@ public class BlockController : MonoBehaviour
     private void OnMouseDown()
     {
         originPos = blocks.transform.position;
-        BoardManager.instance.holdingBlock = blocks;
+        GameManager.instance.holdingBlock = blocks;
     }
 
     private void OnMouseDrag()
     {
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        blocks.transform.position = mousePos;
+        blocks.transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
     private void OnMouseUp()
     {
-        if (BoardManager.instance.CheckFit() == false)
+        bool isfit = GameManager.instance.CheckFit();
+
+        if (isfit)
         {
-            BackToOriginPos();
+            GameManager.instance.FitBlocks();
         }
         else
         {
-            BoardManager.instance.FitBlocks();
+            blocks.transform.position = originPos;
         }
-    }
-
-    private void BackToOriginPos()
-    {
-        blocks.transform.position = originPos;
-        BoardManager.instance.holdingBlock = null;
+        /*
+        if (BoardManager.instance.CheckFit() == false)
+        {
+            
+        }
+        else
+        {
+            
+        }*/
     }
 }
