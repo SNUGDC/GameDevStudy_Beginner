@@ -28,7 +28,8 @@ public class BoardManager : MonoBehaviour
 
     private void Start()
     {
-        CreateBoard();
+        CreatePlayerBoard();
+        CreateComputerBoard();
     }
 
     private void Update()
@@ -45,14 +46,10 @@ public class BoardManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            //D를 눌렀을 때 어떤 숫자가 제일 많은지 로그로 띄우기
-            Debug.Log("D가 눌림.");
-        }
+        
     }
 
-    private void CreateBoard()
+    private void CreatePlayerBoard()
     {
         tilesObject = new GameObject[boardSize, boardSize];
         tilesState = new int[boardSize, boardSize];
@@ -69,6 +66,22 @@ public class BoardManager : MonoBehaviour
         }
 
         Camera.main.transform.position += new Vector3((float)(boardSize - 1) / 2, (float)(boardSize - 1) / 2, 0);   
+    }
+
+    private void CreateComputerBoard()
+    {
+       
+
+        for (int i = 0; i < boardSize; i++)
+        {
+            for (int j = 0; j < boardSize; j++)
+            {
+                Vector2 spawnPos = new Vector2(i + 2, j);
+                GameObject board = Instantiate(tilePrefab, spawnPos, Quaternion.identity, transform);
+                board.GetComponent<SpriteRenderer>().sprite = blockSprite[Random.Range(1, 4)];
+            }
+        }
+
     }
 
     private GameObject CreateBlock(int typeNum, int color)
@@ -138,19 +151,30 @@ public class BoardManager : MonoBehaviour
 
         for (int i = 0; i < 6; i++)
         {
-            if (tilesState[0, i] == 1)
+            for (int j = 0; j < 6; j++)
             {
-                redCount = redCount + 1;
-            }
-            if (tilesState[0, i] == 2)
-            {
-                greenCount = greenCount + 1;
-            }
-            if (tilesState[0, i] == 3)
-            {
-               yellowCount = yellowCount + 1;
+                if (tilesState[i, j] == 1)
+                {
+                    redCount = redCount + 1;
+                }
+                if (tilesState[i, j] == 2)
+                {
+                    greenCount = greenCount + 1;
+                }
+                if (tilesState[i, j] == 3)
+                {
+                    yellowCount = yellowCount + 1;
+                }
             }
 
         }
+        if (redCount > greenCount && redCount > yellowCount) return 1;
+        else if (greenCount > yellowCount && greenCount > redCount) return 2;
+        else if (yellowCount > greenCount && yellowCount > redCount) return 3;
+        else return 0;
+    }
+    public void Submit()
+    {
+        Debug.Log(Judgment());
     }
 }
