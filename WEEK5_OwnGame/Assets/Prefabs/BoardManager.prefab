@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &577606096838411890
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 577606096838411892}
+  - component: {fileID: 577606096838411891}
+  m_Layer: 0
+  m_Name: BoardManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &577606096838411892
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577606096838411890}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &577606096838411891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577606096838411890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cab8f10938aa0ae4fb2e00d97a604250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boardSize: 0
+  blockType:
+  - {fileID: 5703036928065181653, guid: 8722240d2d89ffb44b21a89aaa28c1df, type: 3}
+  - {fileID: 5703036928065181653, guid: f4b230fd3668c774da1a629c300adae5, type: 3}
+  - {fileID: 3897464459691594055, guid: 7d8a598966f10a44ca20f3732c6269ee, type: 3}
+  - {fileID: 2559870053809426790, guid: 69c6d72a8f0733c4699a90f4fe578b1f, type: 3}
+  - {fileID: 2559870053809426790, guid: 964583806a44eb642ade074356b6421d, type: 3}
+  - {fileID: 5703036928065181653, guid: a7cb240b4b7b0bf41a75bc1c0a47d4b8, type: 3}
+  - {fileID: 5703036928065181653, guid: fc66c02821e20b64aba87cd53ac5e715, type: 3}
+  blockSprite:
+  - {fileID: 21300000, guid: ef4447eae15a181458e2a0f286a8d55d, type: 3}
+  - {fileID: 21300000, guid: fb972dbc67c0b1b4489722e279b97087, type: 3}
+  holdingBlock: {fileID: 0}
+  Gauge: 3
+  ShowCount: {fileID: 0}

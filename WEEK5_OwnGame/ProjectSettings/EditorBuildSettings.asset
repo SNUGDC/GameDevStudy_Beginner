@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: d302c5c5add424849ac57f84c0b6d789
+  - enabled: 1
+    path: Assets/Scenes/HeartBoard.unity
+    guid: 7c6eea512258ddd4c9957d425a377848
   m_configObjects: {}

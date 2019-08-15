@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7230148841547671726}
   - component: {fileID: 7382756506281482952}
   - component: {fileID: 2138034985515416510}
-  - component: {fileID: 1529996039822094847}
+  - component: {fileID: 5306852006051606650}
   m_Layer: 5
   m_Name: Block (1)
   m_TagString: Untagged
@@ -107,7 +107,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9911765, y: 0.9911765}
   m_EdgeRadius: 0
---- !u!114 &1529996039822094847
+--- !u!114 &5306852006051606650
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88d3f771c8c75714ca64e294f5da1152, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myType: 0
+  myType: 5
 --- !u!1 &3050849182153307370
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 6137265510129121002}
   - component: {fileID: 7139117642882202503}
   - component: {fileID: 7171239710529454585}
-  - component: {fileID: 7155103933368888691}
+  - component: {fileID: 5676375993320269286}
   m_Layer: 5
   m_Name: Block (3)
   m_TagString: Untagged
@@ -227,7 +227,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9911765, y: 0.9911765}
   m_EdgeRadius: 0
---- !u!114 &7155103933368888691
+--- !u!114 &5676375993320269286
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -239,7 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88d3f771c8c75714ca64e294f5da1152, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myType: 0
+  myType: 5
 --- !u!1 &5393887843801377545
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,7 +251,7 @@ GameObject:
   - component: {fileID: 1491225686144066568}
   - component: {fileID: 5461413977200259328}
   - component: {fileID: 674266237979767509}
-  - component: {fileID: 3728288157197118165}
+  - component: {fileID: 6130573075634790028}
   m_Layer: 5
   m_Name: Block (2)
   m_TagString: Untagged
@@ -347,7 +347,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9911765, y: 0.9911765}
   m_EdgeRadius: 0
---- !u!114 &3728288157197118165
+--- !u!114 &6130573075634790028
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -359,7 +359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88d3f771c8c75714ca64e294f5da1152, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myType: 0
+  myType: 5
 --- !u!1 &5703036928065181653
 GameObject:
   m_ObjectHideFlags: 0
@@ -405,7 +405,7 @@ GameObject:
   - component: {fileID: 1162360702540974025}
   - component: {fileID: 7181049224606010817}
   - component: {fileID: 7734931415753018592}
-  - component: {fileID: 4343054466984203397}
+  - component: {fileID: 2316467893024247192}
   m_Layer: 5
   m_Name: Block
   m_TagString: Untagged
@@ -501,7 +501,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9911765, y: 0.9911765}
   m_EdgeRadius: 0
---- !u!114 &4343054466984203397
+--- !u!114 &2316467893024247192
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -513,4 +513,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88d3f771c8c75714ca64e294f5da1152, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myType: 0
+  myType: 5

@@ -15,12 +15,9 @@ public class BoardManager : MonoBehaviour
     public List<GameObject> blockType;
 
     [Header("Resources")]
-    public GameObject tilePrefab;
     public List<Sprite> blockSprite;
 
     [HideInInspector] public GameObject holdingBlock;
-    private GameObject[,] tilesObject;
-    private int[,] tilesState; //0 흰색 1 검은색
 
     private List<GameObject> BlockinBoard;
     public int Gauge = 3;
@@ -36,26 +33,6 @@ public class BoardManager : MonoBehaviour
 
     private void Start()
     {
-        switch (StageSelect.instance.StageNumber)
-        {
-            case 1:
-                {
-                    CreateBoard();
-                    break;
-                }
-            case 2:
-                {
-                    CreateChessBoard();
-                    break;
-                }
-            case 3:
-                {
-                    CreateHeartBoard();
-                    boardSize = 9;
-                    break;
-                }
-        }
-
         BlockinBoard = new List<GameObject>();
         CreateMultipleBlocks();
     }
@@ -117,119 +94,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    private void CreateBoard()
-    {
-        tilesObject = new GameObject[boardSize, boardSize];
-        tilesState = new int[boardSize, boardSize];
-
-        for (int i = 0; i < boardSize; i++)
-        {
-            for (int j = 0; j < boardSize; j++)
-            {
-                Vector2 spawnPos = new Vector2(i, j);
-                tilesObject[i, j] = Instantiate(tilePrefab, spawnPos, Quaternion.identity, transform);
-
-                tilesState[i, j] = 0;
-            }
-        }
-
-        Camera.main.transform.position += new Vector3((float)(boardSize - 1) / 2, (float)(boardSize - 1) / 2, 0);   
-    }
-
-    private void CreateHeartBoard()
-    {
-        tilesObject = new GameObject[boardSize, boardSize];
-        tilesState = new int[boardSize, boardSize];
-
-        for (int i = 0; i < boardSize; i++)
-        {
-            for (int j = 0; j < boardSize; j++)
-            {
-                switch (j)
-                {
-                    case 0:
-                    case 8:
-                        {
-                            if (i < 7 && i > 3)
-                            {
-                                Vector2 spawnPos = new Vector2(j, i);
-                                tilesObject[i, j] = Instantiate(tilePrefab, spawnPos, Quaternion.identity, transform);
-                            }
-                            break;
-                        }
-                    case 1:
-                    case 7:
-                        {
-                            if (i > 2)
-                            {
-                                Vector2 spawnPos = new Vector2(j, i);
-                                tilesObject[i, j] = Instantiate(tilePrefab, spawnPos, Quaternion.identity, transform);
-                            }
-                            break;
-                        }
-                    case 2:
-                    case 6:
-                        {
-                            if (i > 1)
-                            {
-                                Vector2 spawnPos = new Vector2(j, i);
-                                tilesObject[i, j] = Instantiate(tilePrefab, spawnPos, Quaternion.identity, transform);
-                            }
-                            break;
-                        }
-                    case 3:
-                    case 5:
-                        {
-                            if (i < 7 && i > 0)
-                            {
-                                Vector2 spawnPos = new Vector2(j, i);
-                                tilesObject[i, j] = Instantiate(tilePrefab, spawnPos, Quaternion.identity, transform);
-                            }
-                            break;
-                        }
-                    case 4:
-                        {
-                            if (i < 6)
-                            {
-                                Vector2 spawnPos = new Vector2(j, i);
-                                tilesObject[i, j] = Instantiate(tilePrefab, spawnPos, Quaternion.identity, transform);
-                            }
-                            break;
-                        }
-                }
-            }
-        }
-
-        Camera.main.transform.position += new Vector3((float)(boardSize - 1) / 2, (float)(boardSize - 1) / 2, 0);
-    }
-
-    private void CreateChessBoard()
-    {
-        tilesObject = new GameObject[boardSize, boardSize];
-        tilesState = new int[boardSize, boardSize];
-
-        for (int i = 0; i < boardSize; i++)
-        {
-            for (int j = 0; j < boardSize; j++)
-            {
-                Vector2 spawnPos = new Vector2(i, j);
-                tilesObject[i, j] = Instantiate(tilePrefab, spawnPos, Quaternion.identity, transform);
-
-                if ((i + j + 1) % 2 == 1)
-                {
-                    tilesState[i, j] = 1;
-                    tilesObject[i, j].GetComponent<SpriteRenderer>().sprite = blockSprite[1];
-                }
-                else
-                {
-                    tilesState[i, j] = 0;
-                    tilesObject[i, j].GetComponent<SpriteRenderer>().sprite = blockSprite[0];
-                }
-            }
-        }
-
-        Camera.main.transform.position += new Vector3((float)(boardSize - 1) / 2, (float)(boardSize - 1) / 2, 0);
-    }
+    
 
     private GameObject CreateBlock(int typeNum)
     {
@@ -250,6 +115,8 @@ public class BoardManager : MonoBehaviour
     {
         if (holdingBlock == null) return false;
 
+        int isFit = 0;
+
         for (int i = 0; i < holdingBlock.transform.childCount; i++)
         {
             Transform tr = holdingBlock.transform.GetChild(i).gameObject.transform;
@@ -257,14 +124,19 @@ public class BoardManager : MonoBehaviour
             int targetX = (int)mousePosInt().x + (int)tr.localPosition.x;
             int targetY = (int)mousePosInt().y + (int)tr.localPosition.y;
 
-            //주어진 타일 밖일 경우 false 반환
-            if (!(targetX >= 0 && targetX < boardSize && targetY >= 0 && targetY < boardSize)) return false;
+            RaycastHit2D[] hits = Physics2D.RaycastAll(new Vector2(targetX, targetY), transform.forward);
 
-            //이미 블럭이 존재할 경우 false 반환
-            //if (tilesState[targetX, targetY] == 1) return false;
+            foreach (RaycastHit2D hit in hits)
+            {
+                if(hit.transform.tag == "Tile")
+                {
+                    isFit++;
+                }
+            }
         }
 
-        return true;
+        if (isFit == 4) return true;
+        else return false;
     }
 
     private Vector2 mousePosInt()
@@ -282,44 +154,24 @@ public class BoardManager : MonoBehaviour
             int targetX = (int)mousePosInt().x + (int)tr.localPosition.x;
             int targetY = (int)mousePosInt().y + (int)tr.localPosition.y;
 
-            //tilesObject[targetX, targetY].GetComponent<SpriteRenderer>().sprite = holdingBlock.GetComponentInChildren<SpriteRenderer>().sprite;
+            RaycastHit2D[] hits = Physics2D.RaycastAll(new Vector2(targetX, targetY), transform.forward);
 
-            tilesState[targetX, targetY] = (tilesState[targetX, targetY] + 1) % 2;
-
-            if(tilesState[targetX, targetY] == 1)
+            foreach (RaycastHit2D hit in hits)
             {
-                tilesObject[targetX, targetY].GetComponent<SpriteRenderer>().sprite = blockSprite[1];
-            }
-            else
-            {
-                tilesObject[targetX, targetY].GetComponent<SpriteRenderer>().sprite = blockSprite[0];
-            }
-        }
+                if(hit.transform.tag == "Tile")
+                {
+                    Debug.Log("확인");
+                    if(hit.transform.GetComponent<SpriteRenderer>().sprite == blockSprite[0])
+                    {
+                        hit.transform.GetComponent<SpriteRenderer>().sprite = blockSprite[1];
+                        Debug.Log("변환");
+                    }
+                    else
+                    {
+                        hit.transform.GetComponent<SpriteRenderer>().sprite = blockSprite[0];
+                    }
+                }
 
-        Destroy(holdingBlock);
-        holdingBlock = null;
-    }
-
-    public void FitMoreBlocks()
-    {
-        for (int i = 0; i < holdingBlock.transform.childCount; i++)
-        {
-            Transform tr = holdingBlock.transform.GetChild(i).gameObject.transform;
-
-            int targetX = (int)mousePosInt().x + (int)tr.localPosition.x;
-            int targetY = (int)mousePosInt().y + (int)tr.localPosition.y;
-
-            //tilesObject[targetX, targetY].GetComponent<SpriteRenderer>().sprite = holdingBlock.GetComponentInChildren<SpriteRenderer>().sprite;
-
-            tilesState[targetX, targetY] = (tilesState[targetX, targetY] + 1) % 2;
-
-            if (tilesState[targetX, targetY] == 1)
-            {
-                tilesObject[targetX, targetY].GetComponent<SpriteRenderer>().sprite = blockSprite[1];
-            }
-            else
-            {
-                tilesObject[targetX, targetY].GetComponent<SpriteRenderer>().sprite = blockSprite[0];
             }
         }
 

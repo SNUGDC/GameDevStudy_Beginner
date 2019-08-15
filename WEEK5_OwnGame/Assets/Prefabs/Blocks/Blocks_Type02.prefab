@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8743432512071835502}
   - component: {fileID: 4779488230134871436}
   - component: {fileID: 4291297253298108397}
-  - component: {fileID: 8899093333489750474}
+  - component: {fileID: 4147231693294147953}
   m_Layer: 5
   m_Name: Block (3)
   m_TagString: Untagged
@@ -107,7 +107,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9911765, y: 0.9911765}
   m_EdgeRadius: 0
---- !u!114 &8899093333489750474
+--- !u!114 &4147231693294147953
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 7571213425023779163}
   - component: {fileID: 1917377448293321555}
   - component: {fileID: 1325234477426133618}
-  - component: {fileID: 6676715029973758188}
+  - component: {fileID: 3685699071641701311}
   m_Layer: 5
   m_Name: Block
   m_TagString: Untagged
@@ -227,7 +227,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9911765, y: 0.9911765}
   m_EdgeRadius: 0
---- !u!114 &6676715029973758188
+--- !u!114 &3685699071641701311
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -251,7 +251,7 @@ GameObject:
   - component: {fileID: 3624011558461114670}
   - component: {fileID: 3306375464819622156}
   - component: {fileID: 5197065446071302696}
-  - component: {fileID: 662014537385860145}
+  - component: {fileID: 6288935135355661765}
   m_Layer: 5
   m_Name: Block (1)
   m_TagString: Untagged
@@ -347,7 +347,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9911765, y: 0.9911765}
   m_EdgeRadius: 0
---- !u!114 &662014537385860145
+--- !u!114 &6288935135355661765
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -405,7 +405,7 @@ GameObject:
   - component: {fileID: 7348333728411871290}
   - component: {fileID: 4394071803167858439}
   - component: {fileID: 8630626497315459}
-  - component: {fileID: 5086732338321404850}
+  - component: {fileID: 8404307114119612626}
   m_Layer: 5
   m_Name: Block (2)
   m_TagString: Untagged
@@ -501,7 +501,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9911765, y: 0.9911765}
   m_EdgeRadius: 0
---- !u!114 &5086732338321404850
+--- !u!114 &8404307114119612626
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
