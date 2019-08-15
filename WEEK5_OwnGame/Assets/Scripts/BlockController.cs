@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BlockController : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class BlockController : MonoBehaviour
         else
         {
             BoardManager.instance.FitBlocks();
+            BoardManager.instance.Gauge--;
         }
     }
 

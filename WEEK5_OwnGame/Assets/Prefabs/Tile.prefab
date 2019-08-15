@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3678692999094112718}
   - component: {fileID: 5873372086302722952}
   - component: {fileID: 2764255263014258205}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 7159eff9b698002459fbcca693c729f2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ef4447eae15a181458e2a0f286a8d55d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -97,7 +97,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 1.0922619, y: 1.1071428}
     newSize: {x: 3.36, y: 3.36}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
