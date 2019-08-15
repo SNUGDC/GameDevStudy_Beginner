@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoardManager : MonoBehaviour
+public class BoardManager : LoopFinder
 {
     public static BoardManager instance;
 
@@ -42,6 +42,16 @@ public class BoardManager : MonoBehaviour
 
                 GameObject blocks = CreateBlock(randomType, randomColor);
                 blocks.transform.position = new Vector2(-5 + i * 5, -2);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            List<Pos> loop = LongestLoop(tilesState, 0, 0);
+
+            foreach (Pos pos in loop)
+            {
+                tilesObject[pos.x, pos.y].GetComponent<SpriteRenderer>().color = Color.black;
             }
         }
     }
@@ -120,5 +130,90 @@ public class BoardManager : MonoBehaviour
 
         Destroy(holdingBlock);
         holdingBlock = null;
+    }
+}
+
+public class Pos
+{
+    public int x;
+    public int y;
+
+    public void Set(int a, int b)
+    {
+        x = a;
+        y = b;
+    }
+}
+
+public class LoopFinder : MonoBehaviour
+{
+    private int[,] state;
+
+    private int size;
+
+    int[] dx = new int[4] { 1, -1, 0, 0 };
+    int[] dy = new int[4] { 0, 0, -1, 1 };
+
+    private List<Pos> longestLoop = new List<Pos>();
+
+    public List<Pos> LongestLoop(int[,] tileState, int startX, int startY)
+    {
+        state = tileState;
+        size = state.Length;
+        bool[,] memo = new bool[size, size];
+
+        longestLoop.Clear();
+
+        List<Pos> initial = new List<Pos>();
+
+        Pos start = new Pos();
+        start.Set(startX, startY);
+        initial.Add(start);
+
+        FindLoop(memo, initial);
+        
+        return longestLoop;
+    }
+
+    private void FindLoop(bool[,] memo, List<Pos> loop)
+    {
+        int nowX = loop[loop.Count - 1].x;
+        int nowY = loop[loop.Count - 1].y;
+
+        for (int i = 0; i < 4; i++)
+        {
+            int targetX = nowX + dx[i];
+            int targetY = nowY + dy[i];
+
+            if (!(targetX >= 0 && targetX < size && targetY >= 0 && targetY < size)) continue;
+            if (state[targetX, targetY] == 0) continue;
+            if (memo[targetX, targetY] == true) continue;
+
+            if (targetX == loop[0].x && targetY == loop[0].y)
+            {
+                if (longestLoop.Count < loop.Count)
+                {
+                    longestLoop.Clear();
+
+                    for(int j = 0; j < loop.Count; j++)
+                    {
+                        longestLoop.Add(loop[j]);
+                    }
+                }
+
+                return;
+            }
+
+            Pos target = new Pos();
+            target.Set(targetX, targetY);
+
+            loop.Add(target);
+            memo[targetX, targetY] = true;
+
+            FindLoop(memo, loop);
+
+            loop.Remove(target);
+            memo[targetX, targetY] = false;
+        }
     }
 }

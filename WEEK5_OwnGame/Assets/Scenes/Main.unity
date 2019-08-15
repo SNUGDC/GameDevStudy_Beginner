@@ -226,10 +226,7 @@ MonoBehaviour:
   boardSize: 5
   blockType:
   - {fileID: 5703036928065181653, guid: 8722240d2d89ffb44b21a89aaa28c1df, type: 3}
-  - {fileID: 5703036928065181653, guid: f4b230fd3668c774da1a629c300adae5, type: 3}
-  - {fileID: 3897464459691594055, guid: 7d8a598966f10a44ca20f3732c6269ee, type: 3}
-  - {fileID: 2559870053809426790, guid: 69c6d72a8f0733c4699a90f4fe578b1f, type: 3}
-  - {fileID: 2559870053809426790, guid: 964583806a44eb642ade074356b6421d, type: 3}
+  - {fileID: 2559870053809426790, guid: 901cfb8732d5e6446b5ea17314c76776, type: 3}
   tilePrefab: {fileID: 8321891050717883160, guid: dbeeb0e87a8d60247bc39d32ede1453a,
     type: 3}
   blockSprite:
