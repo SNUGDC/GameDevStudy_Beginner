@@ -11,29 +11,39 @@ public class BlockController : MonoBehaviour
     private void Start()
     {
         blocks = transform.parent.gameObject;
+        
     }
 
     private void OnMouseDown()
     {
-        originPos = blocks.transform.position;
-        BoardManager.instance.holdingBlock = blocks;
+        if (BoardManager.instance.isPause == false)
+        {
+            originPos = blocks.transform.position;
+            BoardManager.instance.holdingBlock = blocks;
+        }
     }
 
     private void OnMouseDrag()
     {
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        blocks.transform.position = mousePos;
+        if (BoardManager.instance.isPause == false)
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            blocks.transform.position = mousePos;
+        }
     }
 
     private void OnMouseUp()
     {
-        if (BoardManager.instance.CheckFit() == false)
+        if (BoardManager.instance.isPause == false)
         {
-            BackToOriginPos();
-        }
-        else
-        {
-            BoardManager.instance.FitBlocks();
+            if (BoardManager.instance.CheckFit() == false)
+            {
+                BackToOriginPos();
+            }
+            else
+            {
+                BoardManager.instance.FitBlocks((float)originPos.x);
+            }
         }
     }
 
