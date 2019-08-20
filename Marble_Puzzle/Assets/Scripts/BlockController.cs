@@ -13,10 +13,30 @@ public class BlockController : MonoBehaviour
         blocks = transform.parent.gameObject;
     }
 
+    //private void Update()
+    //{
+       // SelectPiece();
+    //}
+
+    //private void SelectPiece()
+    //{
+        //if(Input.GetMouseButtonDown(0))
+       // {
+          //  Ray ray = Camera.main.ScreenPointToRay(originPos);
+         //   RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
+
+          //  if (Physics2D.Raycast(ray, out hit))
+          //  {
+          //      Debug.Log("Hit!");
+         //   }
+       // }
+   // }
+
     private void OnMouseDown()
     {
         originPos = blocks.transform.position;
         BoardManager.instance.holdingBlock = blocks;
+        
     }
 
     private void OnMouseDrag()
@@ -29,7 +49,7 @@ public class BlockController : MonoBehaviour
     {
         if (BoardManager.instance.CheckFit() == false)
         {
-            BackToOriginPos();
+            //BackToOriginPos();
         }
         else
         {

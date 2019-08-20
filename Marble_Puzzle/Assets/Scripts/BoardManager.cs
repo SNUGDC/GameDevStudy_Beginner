@@ -6,15 +6,12 @@ public class BoardManager : MonoBehaviour
 {
     public static BoardManager instance;
 
-    [Header("Board Info")]
-    public int boardSize;
-
-    [Header("Block Type")]
-    public List<GameObject> blockType;
+    [Header("Piece Type")]
+    public List<GameObject> pieceType;
 
     [Header("Resources")]
     public GameObject tilePrefab;
-    public List<Sprite> blockSprite;
+    //public List<Sprite> pieceSprite;
 
     [HideInInspector] public GameObject holdingBlock;
     private GameObject[,] tilesObject;
@@ -29,53 +26,61 @@ public class BoardManager : MonoBehaviour
     private void Start()
     {
         CreateBoard();
+        CreateBlock();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                int randomType = Random.Range(0, blockType.Count);
-                int randomColor = Random.Range(0, blockSprite.Count);
+    //private void Update()
+   // {
+        //if (Input.GetKeyDown(KeyCode.A))
+        //{
+           // for (int i = 0; i < 3; i++)
+           // {
+              //  int randomType = Random.Range(0, pieceType.Count);
+                //int randomType = 0;
+                //int randomColor = Random.Range(0, pieceSprite.Count);
 
-                GameObject blocks = CreateBlock(randomType, randomColor);
-                blocks.transform.position = new Vector2(-5 + i * 5, -2);
-            }
-        }
-    }
+              //  GameObject blocks = CreateBlock(randomType);
+              //  blocks.transform.position = new Vector2(-5 + i * 5, -2);
+           // }
+      //  }
+   // }
 
     private void CreateBoard()
     {
-        tilesObject = new GameObject[boardSize, boardSize];
-        tilesState = new int[boardSize, boardSize];
+        tilesObject = new GameObject[10, 10];
+        tilesState = new int[10, 10];
 
-        for (int i = 0; i < boardSize; i++)
+        for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j <= i ; j++)
             {
-                Vector2 spawnPos = new Vector2(i-j*0.5f, j*0.55f);
+                Vector2 spawnPos = new Vector2(i, j);
                 tilesObject[i, j] = Instantiate(tilePrefab, spawnPos, Quaternion.identity, transform);
 
                 tilesState[i, j] = 0;
             }
         }
 
-        Camera.main.transform.position += new Vector3((float)(boardSize - 1) / 2, (float)(boardSize-5) / 2, 0);   
+        Camera.main.transform.position += new Vector3((float)(10 +4) / 2, (float)(10-7) / 2, 0);
+        Camera.main.transform.rotation = Quaternion.Euler(0, 0, -135);
     }
 
-    private GameObject CreateBlock(int typeNum, int color)
+    private void CreateBlock()
     {
-        GameObject block = Instantiate(blockType[typeNum]);
-
-        for (int i = 0; i < block.transform.childCount; i++)
+        int typeNum;
+        for (typeNum = 0; typeNum < 12; typeNum++)
         {
-            GameObject singleBlock = block.transform.GetChild(i).gameObject;
-            singleBlock.GetComponent<SpriteRenderer>().sprite = blockSprite[color];
-        }
+            GameObject block = Instantiate(pieceType[typeNum]);
+            block.transform.position = new Vector2((typeNum%3)*3 , -2*(1+typeNum%2));
+            for (int i = 0; i < block.transform.childCount; i++)
+            {
+                GameObject singleBlock = block.transform.GetChild(i).gameObject;
+                //singleBlock.GetComponent<SpriteRenderer>().sprite = pieceSprite[color];
+                
+            }
 
-        return block;
+            //return block;
+        }
     }
 
     public bool CheckFit()
@@ -90,7 +95,7 @@ public class BoardManager : MonoBehaviour
             int targetY = (int)mousePosInt().y + (int)tr.localPosition.y;
 
             //주어진 타일 밖일 경우 false 반환
-            if (!(targetX >= 0 && targetX < boardSize && targetY >= 0 && targetY < boardSize)) return false;
+            if (!(targetX >= 0 && targetX < 10 && targetY >= 0 && targetY < 10)) return false;
 
             //이미 블럭이 존재할 경우 false 반환
             if (tilesState[targetX, targetY] == 1) return false;
@@ -113,12 +118,12 @@ public class BoardManager : MonoBehaviour
 
             int targetX = (int)mousePosInt().x + (int)tr.localPosition.x;
             int targetY = (int)mousePosInt().y + (int)tr.localPosition.y;
-            
-            tilesObject[targetX, targetY].GetComponent<SpriteRenderer>().sprite = holdingBlock.GetComponentInChildren<SpriteRenderer>().sprite;
+
+            //tilesObject[targetX, targetY].GetComponent<SpriteRenderer>().sprite = holdingBlock.GetComponentInChildren<SpriteRenderer>().sprite;
             tilesState[targetX, targetY] = 1;
         }
 
-        Destroy(holdingBlock);
+        //Destroy(holdingBlock);
         holdingBlock = null;
     }
 }
