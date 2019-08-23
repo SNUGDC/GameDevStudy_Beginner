@@ -13,25 +13,6 @@ public class BlockController : MonoBehaviour
         blocks = transform.parent.gameObject;
     }
 
-    //private void Update()
-    //{
-       // SelectPiece();
-    //}
-
-    //private void SelectPiece()
-    //{
-        //if(Input.GetMouseButtonDown(0))
-       // {
-          //  Ray ray = Camera.main.ScreenPointToRay(originPos);
-         //   RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
-
-          //  if (Physics2D.Raycast(ray, out hit))
-          //  {
-          //      Debug.Log("Hit!");
-         //   }
-       // }
-   // }
-
     private void OnMouseDown()
     {
         originPos = blocks.transform.position;
@@ -43,6 +24,14 @@ public class BlockController : MonoBehaviour
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         blocks.transform.position = mousePos;
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            for (int i = 0; i < blocks.transform.childCount; i++)
+            {
+                blocks.transform.GetChild(i).gameObject.transform.Rotate(0, 0, 90);
+            }
+        }
+
     }
 
     private void OnMouseUp()

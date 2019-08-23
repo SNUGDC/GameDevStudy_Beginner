@@ -12,6 +12,7 @@ public class BoardManager : MonoBehaviour
     [Header("Resources")]
     public GameObject tilePrefab;
     //public List<Sprite> pieceSprite;
+    public List<GameObject> piecePos;
 
     [HideInInspector] public GameObject holdingBlock;
     private GameObject[,] tilesObject;
@@ -61,7 +62,7 @@ public class BoardManager : MonoBehaviour
             }
         }
 
-        Camera.main.transform.position += new Vector3((float)(10 +4) / 2, (float)(10-7) / 2, 0);
+        Camera.main.transform.position += new Vector3((float)5, (float)4, 0);
         Camera.main.transform.rotation = Quaternion.Euler(0, 0, -135);
     }
 
@@ -71,7 +72,8 @@ public class BoardManager : MonoBehaviour
         for (typeNum = 0; typeNum < 12; typeNum++)
         {
             GameObject block = Instantiate(pieceType[typeNum]);
-            block.transform.position = new Vector2((typeNum%3)*3 , -2*(1+typeNum%2));
+            block.transform.position = piecePos[typeNum].transform.position;
+            
             for (int i = 0; i < block.transform.childCount; i++)
             {
                 GameObject singleBlock = block.transform.GetChild(i).gameObject;
@@ -119,8 +121,10 @@ public class BoardManager : MonoBehaviour
             int targetX = (int)mousePosInt().x + (int)tr.localPosition.x;
             int targetY = (int)mousePosInt().y + (int)tr.localPosition.y;
 
+            holdingBlock.transform.position = new Vector2(targetX, targetY);
+
             //tilesObject[targetX, targetY].GetComponent<SpriteRenderer>().sprite = holdingBlock.GetComponentInChildren<SpriteRenderer>().sprite;
-            tilesState[targetX, targetY] = 1;
+            //tilesState[targetX, targetY] = 1;
         }
 
         //Destroy(holdingBlock);
