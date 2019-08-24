@@ -8,6 +8,7 @@ public class BoardManager : MonoBehaviour
 
     [Header("Board Info")]
     public int boardSize;
+    public List<Transform> blockSpawnPos;
 
     [Header("Block Type")]
     public List<GameObject> blockType;
@@ -16,6 +17,8 @@ public class BoardManager : MonoBehaviour
     public GameObject tilePrefab;
 
     [HideInInspector] public GameObject holdingBlock;
+    private List<GameObject> targetTiles = new List<GameObject>();
+    private List<GameObject> createdBlockList = new List<GameObject>();
     private GameObject[,] tilesObject;
     private int[,] tilesState; //0이면 아무것도 없는 상태, 1이면 뭔가 있는 상태
 
@@ -34,13 +37,12 @@ public class BoardManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            for (int i = 0; i < 3; i++)
-            {
-                int randomType = Random.Range(0, blockType.Count);
+            RerollBlocks();
+        }
 
-                GameObject blocks = CreateBlock(randomType);
-                blocks.transform.position = new Vector2(-5 + i * 5, -2);
-            }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            RotateBlock();
         }
     }
 
@@ -60,35 +62,86 @@ public class BoardManager : MonoBehaviour
             }
         }
 
-        Camera.main.transform.position += new Vector3((float)(boardSize - 1) / 2, (float)(boardSize - 1) / 2, 0);   
+        Camera.main.transform.position = new Vector3((float)(boardSize - 1) / 2, (float)(boardSize - 1) / 2 + 2, -10);
+    }
+
+    private void RerollBlocks()
+    {
+        foreach (GameObject block in createdBlockList)
+        {
+            if (block != null) Destroy(block);
+        }
+        createdBlockList = new List<GameObject>();
+
+        for (int i = 0; i < 3; i++)
+        {
+            int randomType = Random.Range(0, blockType.Count);
+
+            GameObject blocks = CreateBlock(randomType);
+            blocks.transform.position = blockSpawnPos[i].position;
+        }
     }
 
     private GameObject CreateBlock(int typeNum)
     {
         GameObject block = Instantiate(blockType[typeNum]);
+        createdBlockList.Add(block);
 
         return block;
+    }
+
+    private void RotateBlock()
+    {
+        if (holdingBlock == null) return;
+
+        foreach (Transform block in holdingBlock.transform.GetComponentsInChildren<Transform>())
+        {
+            float originX = block.localPosition.x;
+            float originY = block.localPosition.y;
+
+            block.localPosition = new Vector2(originY, -originX);
+        }
     }
 
     public bool CheckFit()
     {
         if (holdingBlock == null) return false;
 
+        ChangeTargetTilesColor(Color.white);
+        targetTiles = new List<GameObject>();
+        int isFit = 0;
+
         for (int i = 0; i < holdingBlock.transform.childCount; i++)
         {
             Transform tr = holdingBlock.transform.GetChild(i).gameObject.transform;
 
-            int targetX = (int)mousePosInt().x + (int)tr.localPosition.x;
-            int targetY = (int)mousePosInt().y + (int)tr.localPosition.y;
+            float targetX = tr.position.x;//(int)mousePosInt().x + (int)tr.localPosition.x;
+            float targetY = tr.position.y;//(int)mousePosInt().y + (int)tr.localPosition.y;
 
-            //주어진 타일 밖일 경우 false 반환
-            if (!(targetX >= 0 && targetX < boardSize && targetY >= 0 && targetY < boardSize)) return false;
+            RaycastHit2D[] hits = Physics2D.RaycastAll(new Vector2(targetX, targetY), transform.forward);
 
-            //이미 블럭이 존재할 경우 false 반환
-            if (tilesState[targetX, targetY] == 1) return false;
+            foreach (RaycastHit2D hit in hits)
+            {
+                if (hit.transform.tag == "Tile")
+                {
+                    isFit += 1;
+                    targetTiles.Add(hit.transform.gameObject);
+                }
+            }
         }
+        
+        if (isFit < holdingBlock.transform.childCount) return false;
 
+        ChangeTargetTilesColor(new Color(0.6f, 0.6f, 0.6f));
         return true;
+    }
+
+    private void ChangeTargetTilesColor(Color color)
+    {
+        foreach (GameObject tile in targetTiles)
+        {
+            tile.GetComponent<SpriteRenderer>().color = color;
+        }
     }
 
     private Vector2 mousePosInt()
@@ -104,10 +157,10 @@ public class BoardManager : MonoBehaviour
         {
             Transform tr = holdingBlock.transform.GetChild(0);
 
-            int targetX = (int)mousePosInt().x + (int)tr.localPosition.x;
-            int targetY = (int)mousePosInt().y + (int)tr.localPosition.y;
+            int targetX = (int)targetTiles[i].transform.position.x;
+            int targetY = (int)targetTiles[i].transform.position.y;
 
-            tr.position = new Vector2(targetX, targetY);
+            tr.position = targetTiles[i].transform.position;
             tr.parent = gameObject.transform;
             tilesObject[targetX, targetY] = tr.gameObject;
             tr.GetComponent<Collider2D>().enabled = false;
@@ -117,6 +170,9 @@ public class BoardManager : MonoBehaviour
 
         Destroy(holdingBlock);
         holdingBlock = null;
+
+        ChangeTargetTilesColor(Color.white);
+        targetTiles = new List<GameObject>();
     }
     
     public bool FindLoop(int x, int y, int startX, int startY, Vector2 comingDir, List<GameObject> loopObject)

@@ -24,6 +24,8 @@ public class BlockController : MonoBehaviour
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         blocks.transform.position = mousePos;
+        
+        BoardManager.instance.CheckFit();
     }
 
     private void OnMouseUp()
