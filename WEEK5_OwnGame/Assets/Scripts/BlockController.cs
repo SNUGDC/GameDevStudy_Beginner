@@ -23,7 +23,7 @@ public class BlockController : MonoBehaviour
     private void OnMouseDrag()
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        blocks.transform.position = mousePos;
+        blocks.transform.position = mousePos + new Vector2(0, 2f);
         
         BoardManager.instance.CheckFit();
     }
@@ -38,13 +38,11 @@ public class BlockController : MonoBehaviour
         {
             BoardManager.instance.FitBlocks();
 
-            int x = (int)transform.position.x;
-            int y = (int)transform.position.y;
+            List<GameObject> loop = new List<GameObject> { gameObject };
 
-            List<GameObject> loop = new List<GameObject>();
-            loop.Add(gameObject);
-            if (BoardManager.instance.FindLoop(x + (int)dir[0].x, y + (int)dir[0].y, x, y, dir[0], loop))
+            if (BoardManager.instance.FindLoop((Vector2)transform.position + dir[0], transform.position, dir[0], loop))
             {
+                BattleManager.instance.PlayerAttack(loop.Count);
                 foreach (GameObject gameObject in loop)
                 {
                     BoardManager.instance.DestroyBlock(gameObject);

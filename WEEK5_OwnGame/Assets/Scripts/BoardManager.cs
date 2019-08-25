@@ -80,6 +80,8 @@ public class BoardManager : MonoBehaviour
             GameObject blocks = CreateBlock(randomType);
             blocks.transform.position = blockSpawnPos[i].position;
         }
+
+        BattleManager.instance.EnemyAttack();
     }
 
     private GameObject CreateBlock(int typeNum)
@@ -94,12 +96,24 @@ public class BoardManager : MonoBehaviour
     {
         if (holdingBlock == null) return;
 
-        foreach (Transform block in holdingBlock.transform.GetComponentsInChildren<Transform>())
+        for(int i = 0; i < holdingBlock.transform.childCount; i++)
         {
+            Transform block = holdingBlock.transform.GetChild(i);
+
             float originX = block.localPosition.x;
             float originY = block.localPosition.y;
 
+            //블럭의 위치 회전
             block.localPosition = new Vector2(originY, -originX);
+            //블럭의 고유 회전
+            block.localRotation = Quaternion.Euler(0, 0, -90f + block.localEulerAngles.z);
+            //블럭의 dir 회전
+            for (int j = 0; j < block.GetComponent<BlockController>().dir.Length; j++)
+            {
+                Vector2 originDir = block.GetComponent<BlockController>().dir[j];
+
+                block.GetComponent<BlockController>().dir[j] = new Vector2(originDir.y, -originDir.x);
+            }
         }
     }
 
@@ -175,23 +189,23 @@ public class BoardManager : MonoBehaviour
         targetTiles = new List<GameObject>();
     }
     
-    public bool FindLoop(int x, int y, int startX, int startY, Vector2 comingDir, List<GameObject> loopObject)
+    public bool FindLoop(Vector2 nowPos, Vector2 startPos, Vector2 comingDir, List<GameObject> loopObject)
     {
-        if (startX == x && startY == y) return true;
-        if (!(x >= 0 && x < boardSize && y >= 0 && y < boardSize)) return false;
-        if (tilesState[x, y] == 0) return false;
+        if (startPos.x == nowPos.x && startPos.y == nowPos.y) return true;
+        if (!(nowPos.x >= 0 && nowPos.x < boardSize && nowPos.y >= 0 && nowPos.y < boardSize)) return false;
+        if (tilesState[(int)nowPos.x, (int)nowPos.y] == 0) return false;
 
         //comingDir = 들어온 방향. Left라면 loop 체크시 right를 체크하지 않기위해
         Vector2 ignoreDir = new Vector2(-1 * comingDir.x, -1 * comingDir.y);
 
         for(int i = 0; i < 2; i++)
         {
-            Vector2 checkDir = tilesObject[x, y].GetComponent<BlockController>().dir[i];
+            Vector2 checkDir = tilesObject[(int)nowPos.x, (int)nowPos.y].GetComponent<BlockController>().dir[i];
             if (checkDir == ignoreDir) continue;
 
             List<GameObject> temp = loopObject;
-            temp.Add(tilesObject[x, y]);
-            return FindLoop(x + (int)checkDir.x, y + (int)checkDir.y, startX, startY, checkDir, temp);
+            temp.Add(tilesObject[(int)nowPos.x, (int)nowPos.y]);
+            return FindLoop(nowPos + checkDir, startPos, checkDir, temp);
         }
         return false;
     }
