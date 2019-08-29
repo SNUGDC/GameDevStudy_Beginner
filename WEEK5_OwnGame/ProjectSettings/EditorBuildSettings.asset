@@ -9,9 +9,33 @@ EditorBuildSettings:
     path: Assets/Scenes/StageSelect.unity
     guid: 909053b26be456d45bfc05177ae6b71d
   - enabled: 1
-    path: Assets/Scenes/Main.unity
-    guid: d302c5c5add424849ac57f84c0b6d789
+    path: Assets/Scenes/NormalBoard.unity
+    guid: 61b6248f1395a624ab631cb0aa91977c
+  - enabled: 1
+    path: Assets/Scenes/ChessBoard.unity
+    guid: 1633fa83b3db3a540937bd2111b907fe
   - enabled: 1
     path: Assets/Scenes/HeartBoard.unity
     guid: 7c6eea512258ddd4c9957d425a377848
+  - enabled: 1
+    path: Assets/Scenes/CatBoard.unity
+    guid: ff0dc99eb108780449844d185d19111e
+  - enabled: 1
+    path: Assets/Scenes/FishBoard.unity
+    guid: f8b73cbec3387a049ae6491cf5fe0cb9
+  - enabled: 1
+    path: Assets/Scenes/MouseBoard.unity
+    guid: 8467d3e4ae74c5148ad77d4d3ee47be5
+  - enabled: 1
+    path: Assets/Scenes/DuckBoard.unity
+    guid: a66c8438b72bbc146bcb54c5162b4fd3
+  - enabled: 1
+    path: Assets/Scenes/SwordBoard.unity
+    guid: 98805845ce7632046b6dd1c679e5a419
+  - enabled: 1
+    path: Assets/Scenes/SansBoard.unity
+    guid: b35c8ad357385da44bdd255b5f8fe4f3
+  - enabled: 1
+    path: Assets/Scenes/ScoreBoard.unity
+    guid: 175edc7858f4e0a468be403b61974fcf
   m_configObjects: {}

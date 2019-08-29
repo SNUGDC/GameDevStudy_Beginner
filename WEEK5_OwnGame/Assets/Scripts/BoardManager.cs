@@ -20,31 +20,47 @@ public class BoardManager : MonoBehaviour
     [HideInInspector] public GameObject holdingBlock;
 
     private List<GameObject> BlockinBoard;
-    public int Gauge = 3;
+    public int Gauge = 5;
+    public int ReRollGauge = 0;
+    public int HowManyBlock = 0;
     private int ReRollCount = 0;
-    public Text ShowCount;
+
+    public Text ShowHowManyBlock;
+    public List<Image> Gaugebar;
+    public Image Bar;
+    public Button ReRollButton;
+    public GameObject OptionPanel;
 
     private void Awake()
     {
         if (instance == null) instance = this;
         else Destroy(gameObject);
-        ShowCount.text = ReRollCount.ToString();
+        ShowHowManyBlock.text = HowManyBlock.ToString();
     }
 
     private void Start()
     {
         BlockinBoard = new List<GameObject>();
         CreateMultipleBlocks();
+
+        ReRollButton.gameObject.SetActive(false);
+        OptionPanel.SetActive(false);
+
+        foreach (Image image in Gaugebar)
+        {
+            image.gameObject.SetActive(false);
+        }
+
+        Bar.color = new Color32(129, 193, 71, 255);
     }
 
     private void Update()
     {
-
         if (Gauge == 0)
         {
             CreateMultipleBlocks();
 
-            Gauge = 3;
+            Gauge = 5;
         }
 
         if (Input.GetKeyDown(KeyCode.Q) && holdingBlock != null)
@@ -55,29 +71,42 @@ public class BoardManager : MonoBehaviour
 
     public void ReRoll()
     {
-        for (int i = 0; i < BlockinBoard.Count; i++)
+        if(ReRollGauge == 10)
         {
-            Destroy(BlockinBoard[i]);
+            for (int i = 0; i < BlockinBoard.Count; i++)
+            {
+                Destroy(BlockinBoard[i]);
+            }
+
+            BlockinBoard.Clear();
+
+            CreateMultipleBlocks();
+
+            ReRollCount++;
+
+            Gauge = 5;
+
+            ReRollGauge = 0;
+
+            foreach (Image image in Gaugebar)
+            {
+                image.gameObject.SetActive(false);
+            }
+
+            ReRollButton.gameObject.SetActive(false);
+
+            Bar.color = new Color32(129, 193, 71, 255);
         }
-
-        BlockinBoard.Clear();
-
-        CreateMultipleBlocks();
-
-        ReRollCount++;
-        ShowCount.text = ReRollCount.ToString();
-
-        Gauge = 3;
     }
 
     private void CreateMultipleBlocks()
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 5; i++)
         {
             int randomType = Random.Range(0, blockType.Count);
 
             GameObject blocks = CreateBlock(randomType);
-            blocks.transform.position = new Vector2(-5 + i * 5, -2);
+            blocks.transform.position = new Vector2(17, i * 3);
         }
     }
 
@@ -93,8 +122,6 @@ public class BoardManager : MonoBehaviour
             tr.localPosition = new Vector2(y, -x);
         }
     }
-
-    
 
     private GameObject CreateBlock(int typeNum)
     {
@@ -160,22 +187,65 @@ public class BoardManager : MonoBehaviour
             {
                 if(hit.transform.tag == "Tile")
                 {
-                    Debug.Log("확인");
                     if(hit.transform.GetComponent<SpriteRenderer>().sprite == blockSprite[0])
                     {
                         hit.transform.GetComponent<SpriteRenderer>().sprite = blockSprite[1];
-                        Debug.Log("변환");
                     }
                     else
                     {
                         hit.transform.GetComponent<SpriteRenderer>().sprite = blockSprite[0];
                     }
                 }
-
             }
         }
 
         Destroy(holdingBlock);
         holdingBlock = null;
+    }
+
+    public void ShowGaugebar(int j)
+    {
+            Gaugebar[j].gameObject.SetActive(true);
+    }
+
+    public void ChangeBarColor(int i)
+    {
+        switch(i)
+        {
+            case 0:
+                Bar.color = new Color32(129, 193, 71, 255);
+                break;
+            case 2:
+                Bar.color = new Color32(255, 215, 0, 255);
+                break;
+            case 5:
+                Bar.color = new Color32(255, 150, 0, 255);
+                break;
+            case 8:
+                Bar.color = new Color32(255, 70, 40, 255);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void OptionPanelShow()
+    {
+        OptionPanel.SetActive(true);
+    }
+
+    public void OptionPanelHide()
+    {
+        OptionPanel.SetActive(false);
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void BackToStageSelect()
+    {
+        SceneManager.LoadScene(0);
     }
 }

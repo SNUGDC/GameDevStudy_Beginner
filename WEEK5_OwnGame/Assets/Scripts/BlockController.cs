@@ -36,6 +36,19 @@ public class BlockController : MonoBehaviour
         {
             BoardManager.instance.FitBlocks();
             BoardManager.instance.Gauge--;
+            BoardManager.instance.HowManyBlock++;
+            BoardManager.instance.ShowHowManyBlock.text = BoardManager.instance.HowManyBlock.ToString();
+
+            if (BoardManager.instance.ReRollGauge < 10)
+            {
+                BoardManager.instance.Gaugebar[BoardManager.instance.ReRollGauge].gameObject.SetActive(true);
+                BoardManager.instance.ReRollGauge++;
+                BoardManager.instance.ChangeBarColor(BoardManager.instance.ReRollGauge);
+            }
+            else if (BoardManager.instance.ReRollGauge == 10)
+            {
+                BoardManager.instance.ReRollButton.gameObject.SetActive(true);
+            }
         }
     }
 
