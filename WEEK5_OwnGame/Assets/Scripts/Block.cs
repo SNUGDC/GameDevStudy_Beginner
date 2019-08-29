@@ -6,11 +6,12 @@ public class Block : MonoBehaviour
 {
     //5*5 3차원 그리드상
     static int frame = 3;
-    List<Vector3> bl3;
+    List<Vector3Int> bl3;
     List<GameObject> block;
     public GameObject dim3,dim2;
     public GameObject cube, square;
     GameObject coor;
+    makeBlock make;
     bool isSpin = false;
     int cd = 0;
     Quaternion pos;
@@ -24,16 +25,11 @@ public class Block : MonoBehaviour
         X = new Vector3Int(90, 0, 0);
         Z = new Vector3Int(0, 0, 90);
 
+        make = new makeBlock();
         coor = new GameObject();
 
-        bl3 = new List<Vector3>();
-        bl3.Add(new Vector3Int(1, 0, 0));
-        bl3.Add(new Vector3Int(1, 0, 1));
-        bl3.Add(new Vector3Int(1, 0, -1));
-        bl3.Add(new Vector3Int(1, 0, -2));
-        bl3.Add(new Vector3Int(1, 1, 0));
-        bl3.Add(new Vector3Int(0, 1, 0));
-        bl3.Add(new Vector3Int(1, -1, -1));
+        bl3 = setBlock();
+        
         
 
         for (int i = 0; i < bl3.Count; i++)
@@ -54,9 +50,15 @@ public class Block : MonoBehaviour
         }
     }
 
+    List<Vector3Int> setBlock()
+    {
+        return make.Temp1();
+    }
+
     void Project()
     {
-        Transform coo = dim3.transform;
+        Transform up = dim3.transform;
+        List<Vector3Int> bl2 = new List<Vector3Int>();
         if (dim2.transform.childCount > 0)
         {
             foreach (Transform x in dim2.transform)
@@ -64,11 +66,17 @@ public class Block : MonoBehaviour
                 Destroy(x.gameObject);
             }
         }
-        for (int i = 0; i < coo.childCount; i++)
+        for (int i = 0; i < up.childCount; i++)
         {
-            GameObject temp = Instantiate(square);
-            temp.transform.SetParent(dim2.transform);
-            temp.transform.position += new Vector3(coo.GetChild(i).position.x,0, coo.GetChild(i).position.z);
+            Vector3Int down = Vector3Int.RoundToInt(new Vector3(up.GetChild(i).position.x, 0, up.GetChild(i).position.z));
+            if (!bl2.Contains(down))
+            {
+                //Debug.Log(i);
+                GameObject temp = Instantiate(square);
+                temp.transform.SetParent(dim2.transform);
+                temp.transform.position += down + Vector3.up * 0.1f;
+                bl2.Add(down);
+            }
         }
     }
 
