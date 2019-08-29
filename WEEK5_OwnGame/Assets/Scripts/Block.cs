@@ -6,11 +6,10 @@ public class Block : MonoBehaviour
 {
     //5*5 3차원 그리드상
     static int frame = 3;
-    List<Vector3Int> bl3;
+    public List<Vector3Int> bl3, bl2;
     List<GameObject> block;
-    public GameObject dim3,dim2;
-    public GameObject cube, square;
-    GameObject coor;
+    public GameObject dim3,dim2, cube, square, board;
+    GameObject point3;
     makeBlock make;
     bool isSpin = false;
     int cd = 0;
@@ -26,7 +25,8 @@ public class Block : MonoBehaviour
         Z = new Vector3Int(0, 0, 90);
 
         make = new makeBlock();
-        coor = new GameObject();
+        point3 = new GameObject();
+        board.GetComponent<FloorGrid>().block = this;
 
         bl3 = setBlock();
         
@@ -46,6 +46,7 @@ public class Block : MonoBehaviour
     {
         Rotate();
         if (!isSpin){
+            Place();
             Move();
         }
     }
@@ -58,7 +59,7 @@ public class Block : MonoBehaviour
     void Project()
     {
         Transform up = dim3.transform;
-        List<Vector3Int> bl2 = new List<Vector3Int>();
+        bl2 = new List<Vector3Int>();
         if (dim2.transform.childCount > 0)
         {
             foreach (Transform x in dim2.transform)
@@ -71,7 +72,6 @@ public class Block : MonoBehaviour
             Vector3Int down = Vector3Int.RoundToInt(new Vector3(up.GetChild(i).position.x, 0, up.GetChild(i).position.z));
             if (!bl2.Contains(down))
             {
-                //Debug.Log(i);
                 GameObject temp = Instantiate(square);
                 temp.transform.SetParent(dim2.transform);
                 temp.transform.position += down + Vector3.up * 0.1f;
@@ -82,32 +82,31 @@ public class Block : MonoBehaviour
 
     void Rotate()
     {
-        coor.transform.rotation = dim3.transform.rotation;
+        point3.transform.rotation = dim3.transform.rotation;
         if (!isSpin)
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 isSpin = true;
-                coor.transform.Rotate(Y, Space.World);
-                pos = coor.transform.rotation;
+                point3.transform.Rotate(Y, Space.World);
+                pos = point3.transform.rotation;
                 V = Y;
             }
             else if (Input.GetKeyDown(KeyCode.W))
             {
                 isSpin = true;
-                coor.transform.Rotate(X, Space.World);
-                pos = coor.transform.rotation;
+                point3.transform.Rotate(X, Space.World);
+                pos = point3.transform.rotation;
                 V = X;
             }
             else if (Input.GetKeyDown(KeyCode.E))
             {
                 isSpin = true;
-                coor.transform.Rotate(Z, Space.World);
-                pos = coor.transform.rotation;
+                point3.transform.Rotate(Z, Space.World);
+                pos = point3.transform.rotation;
                 V = Z;
             }
         }
-
         if (isSpin)
         {
             dim3.transform.Rotate(V / frame, Space.World);
@@ -126,15 +125,19 @@ public class Block : MonoBehaviour
     {
         Vector3Int Mv = Direction();
         transform.position += Mv;
+        for(int i = 0; i < bl2.Count; i++) bl2[i] += Mv;
     }
-
     Vector3Int Direction()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow)) return new Vector3Int(1, 0, 0);
-        else if (Input.GetKeyDown(KeyCode.DownArrow)) return new Vector3Int(-1, 0, 0);
-        else if (Input.GetKeyDown(KeyCode.LeftArrow)) return new Vector3Int(0, 0, 1);
-        else if (Input.GetKeyDown(KeyCode.RightArrow)) return new Vector3Int(0, 0, -1);
+        if (Input.GetKeyDown(KeyCode.UpArrow) && transform.position.x < 12) return new Vector3Int(1, 0, 0);
+        else if (Input.GetKeyDown(KeyCode.DownArrow) && transform.position.x > -12) return new Vector3Int(-1, 0, 0);
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) && transform.position.z < 12) return new Vector3Int(0, 0, 1);
+        else if (Input.GetKeyDown(KeyCode.RightArrow) && transform.position.z > -12) return new Vector3Int(0, 0, -1);
         else return new Vector3Int(0, 0, 0);
     }
 
+    void Place()
+    {
+
+    }
 }

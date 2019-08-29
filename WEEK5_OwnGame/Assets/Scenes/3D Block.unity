@@ -194,6 +194,36 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!1 &199138664
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 199138665}
+  m_Layer: 0
+  m_Name: Tiles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &199138665
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 199138664}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1534560922}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &723451134
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,6 +331,36 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1689900297}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1109009849
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1109009850}
+  m_Layer: 0
+  m_Name: Line
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1109009850
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109009849}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1534560922}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1115912185
@@ -538,8 +598,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1544b18d1ca79cf42a993248570c1487, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  board: {fileID: 1534560920}
+  board: {fileID: 199138664}
   tile: {fileID: 3792988798593745158, guid: 1c65d94f1cda3a343a36a544a92bd1aa, type: 3}
+  line: {fileID: 1109009849}
+  mat: {fileID: 2100000, guid: d7b3fa5241771824eb5326d2fa5793fe, type: 2}
+  block: {fileID: 1689900298}
 --- !u!4 &1534560922
 Transform:
   m_ObjectHideFlags: 0
@@ -550,7 +613,9 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 199138665}
+  - {fileID: 1109009850}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -601,10 +666,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8706c27e7e13b5f4496483ff26761d7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bl3: []
+  bl2: []
   dim3: {fileID: 1414129552}
   dim2: {fileID: 1017678393}
   cube: {fileID: 9142155121836806454, guid: 1620d95412e5b9546bbf5e9d0c52030c, type: 3}
   square: {fileID: 6596303641006935308, guid: f7e89e17a7027dc40b2b407739559f59, type: 3}
+  board: {fileID: 1534560920}
 --- !u!1 &2023412045
 GameObject:
   m_ObjectHideFlags: 0
