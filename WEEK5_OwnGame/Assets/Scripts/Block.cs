@@ -129,10 +129,10 @@ public class Block : MonoBehaviour
     }
     Vector3Int Direction()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow) && transform.position.x < 9) return new Vector3Int(1, 0, 0);
-        else if (Input.GetKeyDown(KeyCode.DownArrow) && transform.position.x > -9) return new Vector3Int(-1, 0, 0);
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) && transform.position.z < 9) return new Vector3Int(0, 0, 1);
-        else if (Input.GetKeyDown(KeyCode.RightArrow) && transform.position.z > -9) return new Vector3Int(0, 0, -1);
+        if (Input.GetKeyDown(KeyCode.UpArrow) && transform.position.x < 12) return new Vector3Int(1, 0, 0);
+        else if (Input.GetKeyDown(KeyCode.DownArrow) && transform.position.x > -12) return new Vector3Int(-1, 0, 0);
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) && transform.position.z < 12) return new Vector3Int(0, 0, 1);
+        else if (Input.GetKeyDown(KeyCode.RightArrow) && transform.position.z > -12) return new Vector3Int(0, 0, -1);
         else return new Vector3Int(0, 0, 0);
     }
 
