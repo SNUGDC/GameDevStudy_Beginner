@@ -6,7 +6,6 @@ public class FloorGrid : MonoBehaviour
 {
     static int m = 23, n = 23;     // 타일 상태 0 = 벽, 1 = 구멍, 2 = 채워짐
     static float wid = 0.1f;
-    static Color blk = new Color(0.5f, 0.5f, 0.5f);
 
     int total = 0, need = 0, fill = 0;          
     GameObject[,] table;
@@ -24,7 +23,7 @@ public class FloorGrid : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("Press Q, W, E to rotate, Press Space to place, Press Z to undo");
+        Debug.Log("Press A, S, D to rotate, Press Space to place, Press LeftShift to undo");
 
         template = new Template();
         tileState = new int[m, n];
@@ -42,7 +41,7 @@ public class FloorGrid : MonoBehaviour
         {
             Place();
         }
-        if (Input.GetKeyDown(KeyCode.Z) && moveIndex.Count > 0)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && moveIndex.Count > 0)
         {
             Back();
         }
@@ -103,11 +102,9 @@ public class FloorGrid : MonoBehaviour
         for(int i = 0; i < blockCoord.Count; i++)
         {
             int state = tileState[blockCoord[i].x + 11, blockCoord[i].z + 11];
-            //Debug.Log((blockCoord[i].x + 11) + " " + (blockCoord[i].z + 11));
             if (state != 1)
             {
                 able = false;
-                //Debug.Log("Nope");
                 break;
             }
         }
@@ -118,77 +115,42 @@ public class FloorGrid : MonoBehaviour
         Queue<GameObject> queue = new Queue<GameObject>();
         for (int i = 0; i < index.Count; i++)
         {
-            int[] te = new int[] { index[i][0] + 1, index[i][1] };
-            //if (!index.Contains(new int[] { index[i][0] + 1, index[i][1] }))
-            bool b1 = true, b2 = true, b3 = true, b4 = true;
+            List<Vector3Int> vecNear = new List<Vector3Int>();
+            vecNear.Add(new Vector3Int(1, 0, 0));
+            vecNear.Add(new Vector3Int(-1, 0, 0));
+            vecNear.Add(new Vector3Int(0, 0, 1));
+            vecNear.Add(new Vector3Int(0, 0, -1));
 
-            for (int j = 0; j < index.Count; j++)
+            List<Vector3Int> vecLine = new List<Vector3Int>();
+            vecLine.Add(new Vector3Int(0, 0, 1));
+            vecLine.Add(new Vector3Int(1, 0, 0));
+
+            for (int n = 0; n < 4; n++)
             {
-                if(index[j][0]==index[i][0]+1 && index[j][1] == index[i][1])
+                bool near = false;
+                for (int j = 0; j < index.Count; j++)
                 {
-                    b1 = false;
-                    break;
+                    if (Vector2Int.Equals(blockCoord[i] + vecNear[n], blockCoord[j]))
+                    {
+                        near = true;
+                        break;
+                    }
+                }
+                if (!near)
+                {
+                    GameObject obj = new GameObject();
+                    obj.transform.SetParent(line.transform);
+                    LineRenderer lr = obj.AddComponent<LineRenderer>();
+                    lr.material = mat;
+                    lr.startWidth = wid;
+                    lr.endWidth = wid;
+                    Vector3 vert = new Vector3(Vector3.Dot(vecNear[n], vecLine[0]), 0, Vector3.Dot(vecNear[n], vecLine[1]));
+                    lr.SetPositions(new Vector3[] { blockCoord[i] + 0.55f * vert + 0.5f * (Vector3)vecNear[n] + 0.05f * Vector3.up, blockCoord[i] - 0.55f * vert + 0.5f * (Vector3)vecNear[n] + 0.05f * Vector3.up });
+                    queue.Enqueue(obj);
                 }
             }
-            if (b1)
-            { 
-                GameObject obj = new GameObject();
-                obj.transform.SetParent(line.transform);
-                LineRenderer lr = obj.AddComponent<LineRenderer>();
-                lr.material = mat;
-                lr.startWidth = wid;
-                lr.endWidth = wid;
-                lr.startColor = blk;
-                lr.endColor = blk;
-                lr.SetPositions(new Vector3[] { (Vector3)blockCoord[i] + new Vector3(0.5f, 0, 0.5f), (Vector3)blockCoord[i] + new Vector3(0.5f, 0, -0.5f) });
-                queue.Enqueue(obj);
-            }
-
-            for (int j = 0; j < index.Count; j++)
-            {
-                if (index[j][0] == index[i][0] - 1 && index[j][1] == index[i][1])
-                {
-                    b2 = false;
-                    break;
-                }
-            }
-            if (b2)
-            {
-                GameObject obj = new GameObject();
-                obj.transform.SetParent(line.transform);
-                LineRenderer lr = obj.AddComponent<LineRenderer>();
-                lr.material = mat;
-                lr.startWidth = wid;
-                lr.endWidth = wid;
-                lr.startColor = blk;
-                lr.endColor = blk;
-                lr.SetPositions(new Vector3[] { (Vector3)blockCoord[i] + new Vector3(-0.5f, 0, 0.5f), (Vector3)blockCoord[i] + new Vector3(-0.5f, 0, -0.5f) });
-                queue.Enqueue(obj);
-            }
-
-            for (int j = 0; j < index.Count; j++)
-            {
-                if (index[j][0] == index[i][0] && index[j][1] == index[i][1] + 1)
-                {
-                    b3 = false;
-                    break;
-                }
-            }
-            if (b3)
-            {
-                GameObject obj = new GameObject();
-                obj.transform.SetParent(line.transform);
-                LineRenderer lr = obj.AddComponent<LineRenderer>();
-                lr.material = mat;
-                lr.startWidth = wid;
-                lr.endWidth = wid;
-                lr.startColor = blk;
-                lr.endColor = blk;
-                lr.SetPositions(new Vector3[] { (Vector3)blockCoord[i] + new Vector3(0.5f, 0, 0.5f), (Vector3)blockCoord[i] + new Vector3(-0.5f, 0, 0.5f) });
-                queue.Enqueue(obj);
-            }
-
-            for (int j = 0; j < index.Count; j++)
+            /*
+         for (int j = 0; j < index.Count; j++)
             {
                 if (index[j][0] == index[i][0] && index[j][1] == index[i][1] - 1)
                 {
@@ -204,11 +166,10 @@ public class FloorGrid : MonoBehaviour
                 lr.material = mat;
                 lr.startWidth = wid;
                 lr.endWidth = wid;
-                lr.startColor = blk;
-                lr.endColor = blk;
                 lr.SetPositions(new Vector3[] { (Vector3)blockCoord[i] + new Vector3(0.5f, 0, -0.5f), (Vector3)blockCoord[i] + new Vector3(-0.5f, 0, -0.5f) });
                 queue.Enqueue(obj);
-            }
+            }    
+         */
         }
         outlines.Push(queue);
     }

@@ -6,23 +6,29 @@ public class Block : MonoBehaviour
 {
     //5*5 3차원 그리드상
     static int frame = 3;
+
     public List<Vector3Int> bl3, bl2;
     List<GameObject> block;
     public GameObject dim3,dim2, cube, square, board;
     GameObject point3;
     makeBlock make;
-    bool isSpin = false;
-    int cd = 0;
+    bool isSpin = false, isMove = false, canMove = true;
+    int countSpin = 0;
     Quaternion pos;
-    Vector3Int Y, X, Z;
+    Vector3Int Y, X, Z, Mv;
     Vector3 V;
 
     // Start is called before the first frame update
     void Start()
     {
-        Y = new Vector3Int(0, 90, 0);
-        X = new Vector3Int(90, 0, 0);
-        Z = new Vector3Int(0, 0, 90);
+        Y = new Vector3Int(0, -90, 0);
+        X = new Vector3Int(-90, 0, 0);
+        Z = new Vector3Int(0, 0, -90);
+        Mv = Vector3Int.zero;
+        isSpin = false;
+        isMove = false;
+        canMove = true;
+        countSpin = 0;
 
         make = new makeBlock();
         point3 = new GameObject();
@@ -46,7 +52,6 @@ public class Block : MonoBehaviour
     {
         Rotate();
         if (!isSpin){
-            Place();
             Move();
         }
     }
@@ -85,21 +90,21 @@ public class Block : MonoBehaviour
         point3.transform.rotation = dim3.transform.rotation;
         if (!isSpin)
         {
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.A))
             {
                 isSpin = true;
                 point3.transform.Rotate(Y, Space.World);
                 pos = point3.transform.rotation;
                 V = Y;
             }
-            else if (Input.GetKeyDown(KeyCode.W))
+            else if (Input.GetKeyDown(KeyCode.S))
             {
                 isSpin = true;
                 point3.transform.Rotate(X, Space.World);
                 pos = point3.transform.rotation;
                 V = X;
             }
-            else if (Input.GetKeyDown(KeyCode.E))
+            else if (Input.GetKeyDown(KeyCode.D))
             {
                 isSpin = true;
                 point3.transform.Rotate(Z, Space.World);
@@ -110,11 +115,11 @@ public class Block : MonoBehaviour
         if (isSpin)
         {
             dim3.transform.Rotate(V / frame, Space.World);
-            cd++;
-            if (cd == frame)
+            countSpin++;
+            if (countSpin == frame)
             {
                 isSpin = false;
-                cd = 0;
+                countSpin = 0;
                 dim3.transform.rotation = pos;
                 Project();
             }
@@ -123,21 +128,57 @@ public class Block : MonoBehaviour
 
     void Move()
     {
-        Vector3Int Mv = Direction();
-        transform.position += Mv;
-        for(int i = 0; i < bl2.Count; i++) bl2[i] += Mv;
+        keepMove();
+        Mv = startMove();
+        if (isMove && canMove && checkBound(Mv))
+        {
+            transform.position += Mv;
+            for (int i = 0; i < bl2.Count; i++) bl2[i] += Mv;
+        }
+        canMove = !canMove;
+        isMove = false;
     }
-    Vector3Int Direction()
+    Vector3Int startMove()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow) && transform.position.x < 9) return new Vector3Int(1, 0, 0);
-        else if (Input.GetKeyDown(KeyCode.DownArrow) && transform.position.x > -9) return new Vector3Int(-1, 0, 0);
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) && transform.position.z < 9) return new Vector3Int(0, 0, 1);
-        else if (Input.GetKeyDown(KeyCode.RightArrow) && transform.position.z > -9) return new Vector3Int(0, 0, -1);
-        else return new Vector3Int(0, 0, 0);
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            isMove = true;
+            canMove = true;
+            return new Vector3Int(1, 0, 0);
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            isMove = true;
+            canMove = true;
+            return new Vector3Int(-1, 0, 0);
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            isMove = true;
+            canMove = true;
+            return new Vector3Int(0, 0, 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            isMove = true;
+            canMove = true;
+            return new Vector3Int(0, 0, -1);
+        }
+        else return Mv;
+    }
+    void keepMove()
+    {
+        if (Input.GetKey(KeyCode.UpArrow)||Input.GetKey(KeyCode.DownArrow)|| Input.GetKey(KeyCode.LeftArrow)|| Input.GetKey(KeyCode.RightArrow))
+        {
+            isMove = true;
+        }
+    }
+    bool checkBound(Vector3Int mv)
+    {
+        Vector3Int temp = Vector3Int.RoundToInt(transform.position) + mv;
+        if (temp.x > 8 || temp.x < -8 || temp.z > 8 || temp.z < -8) return false;
+        else return true;
     }
 
-    void Place()
-    {
 
-    }
 }
